@@ -1,0 +1,9 @@
+.venv
+__pycache__
+*.pyc
+.env
+.idea
+.git
+.workbuddy-ai
+chroma_db
+chroma_lc_db

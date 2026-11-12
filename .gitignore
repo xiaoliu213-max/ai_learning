@@ -1,0 +1,22 @@
+# 虚拟环境
+.venv/
+
+# 密钥 —— 绝对不能提交
+.env
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 向量库数据（可重建，体积大，不要提交）
+chroma_db/
+chroma_lc_db/
+
+# IDE 配置
+.idea/
+
+# AI 助手工作目录
+.workbuddy-ai/
+
+# 内部教学笔记（不公开）
+CONTEXT_HANDOFF.md

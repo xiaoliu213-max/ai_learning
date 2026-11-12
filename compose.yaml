@@ -1,0 +1,9 @@
+services:
+  agent:
+    build: .
+    container_name: ai-library-agent
+    ports:
+      - "8010:8010"
+    env_file:
+      - .env          # 运行时注入，不写进镜像
+    restart: unless-stopped
