@@ -5,7 +5,7 @@
 
 ---
 
-## 📍 当前进度（更新于 2026-11-10）
+## 📍 当前进度（更新于 2026-11-22）
 
 | 阶段 | 状态 | 说明 |
 |---|---|---|
@@ -14,6 +14,7 @@
 | **③ RAG** ★ | ✅ **结业** | 4/4 验收全过 + Chroma 已验证 |
 | **④ 用框架重写（LangChain）** | ✅ **结业** | 176 行 → 109 行；源码逐点解剖；写了 300 字选型结论 |
 | **⑤ Agent + 部署** | ✅ **结业** | 四版 Agent（220→121→93 行）；FastAPI `/chat` + `/chat/stream`；SSE 流式；Docker 容器化跑通 |
+| **⑥ LangGraph 与 Agent 编排** | ✅ **结业（5 课全过）** | 热身 ✅ / L1 手写图 ✅ / L2 记忆 ✅ / L3 路由 ✅ / L4 人工审批 ✅ / L5 结构化输出 ✅（“天气”问题普通 llm 强选 rag、结构化版正确返回 other，现场对比成立） |
 
 **已完成的手写项目**（`stage3_rag/`）：
 
@@ -230,6 +231,47 @@
 - [x] 能解释"模型是怎么决定调用哪个工具的"
 - [x] 能解释"为什么要流式输出"
 - [x] 应用能通过 Docker 容器访问
+
+---
+
+# 阶段 ⑥ · LangGraph 与 Agent 编排（5 课）
+
+## 目标
+
+把 `create_agent` 藏起来的循环**亲手搭一遍**：图、节点、状态、条件边、人工审批。
+顺路补齐 LangChain 层的三个缺口：Memory 抽象、Middleware、结构化输出。
+学完之后，"框架怎么藏的"从猜测变成亲眼所见。
+
+## 知识点
+
+- [x] TypedDict / Annotated / Reducer（先补的 Python 语法）—— 00_syntax.py 已完成
+- [x] StateGraph / Node / Edge（普通边、条件边、Command 路由）—— L1 + L3 完成（三分支路由验证通过）
+- [x] State 与 Reducer（消息如何累积）—— 对应手写 `SESSIONS` 的正式版 —— 02_memory.py 验证通过
+- [x] Checkpointer（会话记忆持久化）—— 同进程多次 invoke 累积；第二问“那本书”解析成功
+- [x] `with_structured_output`（结构化输出，承接阶段① JSON 抽取）—— 05_structured_output.py：抽取/分类/普通输出对比三段验证；Literal 留 other 出口
+- [x] interrupt —— 人工审批 HITL（Middleware 家族）—— 04_hitl.py yes 路径跑通；实证：恢复时节点重跑、无 checkpointer 时暂停成功但恢复才报 RuntimeError
+
+## 产出
+
+- [x] `stage6_langgraph/00_syntax.py` —— TypedDict / Annotated 小练习
+- [x] `01_stategraph.py` —— 手写图版 Agent（复刻 02_agent 的行为）
+- [x] `02_memory.py` —— 带 Checkpointer 的多轮对话
+- [x] `03_routing.py` —— 分类节点 + 三分支条件边（并行/子图未做，列为选修）
+- [x] `04_hitl.py` —— 预约工具触发时暂停，人工确认后继续
+- [x] `05_structured_output.py` —— 结构化输出抽取
+
+## 验收标准
+
+- [ ] 能解释"图和 while 循环的区别、各自适合什么"
+- [ ] 能不查资料搭一张"模型 ↔ 工具"两节点图
+- [ ] 能演示一次带人工确认的预约流程
+- [ ] 能说出 `Annotated[list, add_messages]` 解决什么问题（覆盖 vs 追加）
+- [ ] 能用 `with_structured_output` 把一段话抽成固定结构
+
+## 配套视频
+
+第二门课（黑马 87 集）：**70–86 连续看**；**34（HITL）** 在第 4 课前看；
+结构化输出如课程无对应集，看官方文档 `with_structured_output` 页。
 
 ---
 
